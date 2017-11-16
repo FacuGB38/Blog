@@ -34,6 +34,9 @@ export class HeaderComponent implements OnInit {
     });
 
     firebase.auth().onAuthStateChanged(userData => {
+
+      debugger;
+
       // we are logged in
       if (userData && userData.emailVerified) {
         this.isLoggedIn = true;

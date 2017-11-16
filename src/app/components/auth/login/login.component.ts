@@ -8,6 +8,8 @@ import { OwnFireService } from "../../../providers/own-fire.service";
 
 import { Router } from "@angular/router";
 
+import {UserService} from "../../../providers/user.service";
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,7 +19,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private ownFireService: OwnFireService,
-    private router: Router
+    private router: Router,
+    private userSrv: UserService
   ) { }
 
   ngOnInit() {
@@ -39,17 +42,18 @@ export class LoginComponent implements OnInit {
 
         return this.ownFireService.getUserFromDatabase(userData.uid);
 
-            } else {
+      } else {
               console.log("NO EXISTISSSS");
-            }
+      }
 
-          })
-          .then( userDataFromDataBase => {
-            console.log("ExisteOk");
-            console.log(userDataFromDataBase);
-            this.router.navigate(["/posts"]);
-
-          })
+    })
+    .then( userDataFromDataBase => {
+      console.log("ExisteOk");
+      console.log(userDataFromDataBase);
+      debugger;
+      this.userSrv.set(userDataFromDataBase);
+      this.router.navigate(["/posts"]);
+    })
 
   }
 

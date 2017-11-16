@@ -7,6 +7,7 @@ export class UserService {
   constructor() { }
 
   set(userFromDatabase) {
+    debugger;
     localStorage.setItem('user', JSON.stringify(userFromDatabase));
 
     const messaging = firebase.messaging();
@@ -41,6 +42,7 @@ export class UserService {
   }
 
   getProfile() {
+    debugger;
     const user = localStorage.getItem('user');
     return JSON.parse(user);
   }
