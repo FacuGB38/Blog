@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NgForm } from "@angular/forms";
+
+import * as firebase from "firebase";
+
+import { OwnFireService } from "../../../providers/own-fire.service";
+
+import { Router } from "@angular/router";
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -7,9 +15,42 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private ownFireService: OwnFireService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
+
+  }
+
+  onSubmit(form: NgForm) {
+
+  const email = form.value.email;
+  const password = form.value.password;
+
+  console.log(email);
+  console.log(password);
+
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then( userData => {
+
+      if ( userData.emailVerified ) {
+
+        return this.ownFireService.getUserFromDatabase(userData.uid);
+
+            } else {
+              console.log("NO EXISTISSSS");
+            }
+
+          })
+          .then( userDataFromDataBase => {
+            console.log("ExisteOk");
+            console.log(userDataFromDataBase);
+            this.router.navigate(["/posts"]);
+
+          })
+
   }
 
 }
